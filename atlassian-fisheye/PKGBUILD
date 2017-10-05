@@ -1,0 +1,36 @@
+_pkgname=fisheye
+_shortname=fecru
+pkgname=atlassian-${_pkgname}
+pkgver=4.5.0
+pkgrel=1
+pkgdesc="Fisheye Server"
+url="https://www.atlassian.com/software/${_pkgname}"
+license=("custom")
+arch=("i686" "x86_64")
+depends=("java-runtime=8"
+        "git>=1.8.0"
+        "perl>=5.8.8")
+backup=("etc/systemd/system/${_pkgname}.service.d/local.conf")
+options=(!strip)
+source=("https://www.atlassian.com/software/${_pkgname}/downloads/binary/${_pkgname}-${pkgver}.zip"
+        "${_pkgname}.service"
+        "local.conf"
+        )
+
+package() {
+    install -dm755 "$pkgdir/opt/$pkgname"
+    install -dm755 "$pkgdir/usr/share/licenses/$pkgname"
+    cp -r "$srcdir/${_shortname}-$pkgver/licenses/"* "$pkgdir/usr/share/licenses/$pkgname"
+    cp -r "$srcdir/${_shortname}-$pkgver/"* "$pkgdir/opt/$pkgname"
+    # remove unneeded Windows files
+    find "$pkgdir/opt/$pkgname/bin" -name "*.bat" -type f -exec rm "{}" \;
+    find "$pkgdir/opt/$pkgname/bin" -name "*.exe" -type f -exec rm "{}" \;
+
+    # setup systemd service
+    install -Dm644 "$srcdir/local.conf" "$pkgdir/etc/systemd/system/${_pkgname}.service.d/local.conf"
+    install -Dm644 "$srcdir/${_pkgname}.service" "$pkgdir/usr/lib/systemd/system/${_pkgname}.service"
+}
+
+md5sums=('8d8725c8ae94f60a95bdbd9ac3bae614'
+         '79650d758ef8cf78457d0a05c36b1735'
+         'e2f7bb212b3a689c1b0dba5cc0fb34ff')
