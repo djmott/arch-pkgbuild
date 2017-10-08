@@ -1,0 +1,17 @@
+pkgname=ibm-tape-drv-dev
+pkgver=1.1.1.1
+pkgrel=1
+pkgdesc="IBM Tape Driver Development"
+url="https://www.ibm.com/${pkgname}"
+license=("custom")
+arch=("i686" "x86_64")
+depends=()
+source=("https://oss.oracle.com/projects/ltfs/dist/files/source/OELS_LTFS_1.2.7_source/ltfs-1.2.7.1.0_20151020_linux_6_5.tar.gz")
+
+
+package() {
+  mkdir -p "$pkgdir/usr/include/sys"
+  install -Dm644 "$srcdir/ltfs-1.2.7/src/tape_drivers/linux/ibmtape/IBM_tape.h" "$pkgdir/usr/include/sys/IBM_tape.h"
+}
+
+md5sums=('72a3f846e2a14a6a2ded214efc0d83fb')
