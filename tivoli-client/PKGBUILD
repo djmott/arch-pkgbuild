@@ -1,0 +1,22 @@
+pkgname=tivoli-client
+_shortname=TIV-TSMBAC
+pkgver=8.1.0.0
+pkgrel=1
+pkgdesc="IBM Spectrum Protect client"
+url="https://www.ibm.com/us-en/marketplace/data-protection-and-recovery"
+license=("custom")
+arch=("i686" "x86_64")
+makedepends=("rpmextract")
+source=("ftp://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v8r1/Linux/LinuxX86/BA/v810/${pkgver}-${_shortname}-LinuxX86.tar")
+
+md5sums=('39bb53d30021a8db473b8a006f0dd04a')
+
+package(){
+  cd "$pkgdir"
+  for rpm in $(find "$srcdir" -name *.rpm); do
+    rpmextract.sh "$rpm"
+  done
+  rm -rf "$pkgdir/etc"
+  rm -rf "$pkgdir/usr/lib64"
+  rm -rf "$pkgdir/usr/bin"
+}
