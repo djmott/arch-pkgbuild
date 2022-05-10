@@ -1,0 +1,26 @@
+pkgname=include-what-you-use
+pkgver=0.18
+pkgrel=1
+pkgdesc="Include What You Use"
+url="https://${pkgname}.org"
+license=("custom")
+arch=("i686" "x86_64")
+depends=("clang>=9")
+options=(!strip)
+source=("git+https://github.com/${pkgname}/${pkgname}.git")
+md5sums=('SKIP')
+
+prepare(){
+	cd ${srcdir}/${pkgname}
+	git checkout ${pkgver}
+	
+}
+
+build(){
+	cmake -S ${srcdir}/${pkgname} -B .build -DCMAKE_INSTALL_PREFIX=${pkgdir}
+}
+
+package() {
+	cmake --build .build --target install
+}
+
